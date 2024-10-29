@@ -11,9 +11,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-c0rq@7vxt4bcj#^bn!vuzs_7r++5h5o!jbgn=q&s3qwp9ywpuz'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    '*', # for local development without debug mode
+]
 
 
 # Application definition
@@ -25,10 +27,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # 
+    'rest_framework',
+    'rest_framework.authtoken',
+    'corsheaders',
+    # 
     'logs',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -39,6 +47,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'root.urls'
+
 
 TEMPLATES = [
     {
@@ -103,6 +112,12 @@ USE_L10N = True
 
 USE_TZ = True
 
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
+SESSION_COOKIE_SECURE = True
+CRF_COOKIE_SECURE = True
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
@@ -120,6 +135,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'logs.CustomUser'
+
+CORS_ALLAW_REGEX = r'^/api.*'
 
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLAW_CREDENTIALS = True
